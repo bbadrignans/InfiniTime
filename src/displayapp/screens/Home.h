@@ -17,7 +17,12 @@ namespace Pinetime {
         ~Home() override;
         void OnObjectEvent(lv_obj_t* obj, lv_event_t event);
       private:
+        bool OnTouchEvent(TouchEvents event) override;
         Pinetime::Controllers::HomeService& homeService;
+
+        lv_style_t btn_style;
+        lv_obj_t* btn1;
+        lv_obj_t* btn2;
       };
     }
   }
