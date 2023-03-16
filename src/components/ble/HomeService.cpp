@@ -1,4 +1,4 @@
-/*  Copyright (C) 2020-2021 JF, Adam Pigg, Avamander
+/*  Copyright (C) 2023 Benoit Badrignans
 
     This file is part of InfiniTime.
 
@@ -20,10 +20,10 @@
 #include <cstring>
 
 namespace {
-  // 0005yyxx-78fc-48fe-8e23-433b3a1942d0
+  // 0006yyxx-78fc-48fe-8e23-433b3a1942d0
   constexpr ble_uuid128_t CharUuid(uint8_t x, uint8_t y) {
     return ble_uuid128_t {.u = {.type = BLE_UUID_TYPE_128},
-                          .value = {0xd0, 0x42, 0x19, 0x3a, 0x3b, 0x43, 0x23, 0x8e, 0xfe, 0x48, 0xfc, 0x78, x, y, 0x05, 0x00}};
+                          .value = {0xd0, 0x42, 0x19, 0x3a, 0x3b, 0x43, 0x23, 0x8e, 0xfe, 0x48, 0xfc, 0x78, x, y, 0x06, 0x00}};
   }
 
   // 00000000-78fc-48fe-8e23-433b3a1942d0
@@ -34,8 +34,7 @@ namespace {
   constexpr ble_uuid128_t homeUuid {BaseUuid()};
 
   constexpr ble_uuid128_t homeEventCharUuid {CharUuid(0x01, 0x00)};
-
-  constexpr uint8_t MaxStringSize {40};
+  constexpr ble_uuid128_t homeStatusCharUuid {CharUuid(0x02, 0x00)};
 
   int HomeCallback(uint16_t /*conn_handle*/, uint16_t /*attr_handle*/, struct ble_gatt_access_ctxt* ctxt, void* arg) {
     return static_cast<Pinetime::Controllers::HomeService*>(arg)->OnCommand(ctxt);
@@ -48,7 +47,11 @@ Pinetime::Controllers::HomeService::HomeService(Pinetime::System::SystemTask& sy
                                  .arg = this,
                                  .flags = BLE_GATT_CHR_F_NOTIFY,
                                  .val_handle = &eventHandle};
-  characteristicDefinition[1] = {0};
+  characteristicDefinition[1] = {.uuid = &homeStatusCharUuid.u,
+                                 .access_cb = HomeCallback,
+                                 .arg = this,
+                                 .flags = BLE_GATT_CHR_F_WRITE | BLE_GATT_CHR_F_READ};
+  characteristicDefinition[2] = {0};
 
   serviceDefinition[0] = {.type = BLE_GATT_SVC_TYPE_PRIMARY, .uuid = &homeUuid.u, .characteristics = characteristicDefinition};
   serviceDefinition[1] = {0};
@@ -65,14 +68,6 @@ void Pinetime::Controllers::HomeService::Init() {
 
 int Pinetime::Controllers::HomeService::OnCommand(struct ble_gatt_access_ctxt* ctxt) {
   if (ctxt->op == BLE_GATT_ACCESS_OP_WRITE_CHR) {
-    size_t notifSize = OS_MBUF_PKTLEN(ctxt->om);
-    size_t bufferSize = notifSize;
-    if (notifSize > MaxStringSize) {
-      bufferSize = MaxStringSize;
-    }
-
-    char data[bufferSize + 1];
-    os_mbuf_copydata(ctxt->om, 0, bufferSize, data);
   }
   return 0;
 }
