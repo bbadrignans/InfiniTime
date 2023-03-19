@@ -27,14 +27,12 @@
 #undef min
 
 namespace Pinetime {
-  namespace System {
-    class SystemTask;
-  }
-
   namespace Controllers {
+    class NimbleController;
+
     class HomeService {
     public:
-      explicit HomeService(Pinetime::System::SystemTask& system);
+      explicit HomeService(NimbleController& nimble);
 
       void Init();
 
@@ -55,7 +53,7 @@ namespace Pinetime {
 
       uint16_t eventHandle {};
 
-      Pinetime::System::SystemTask& m_system;
+      NimbleController& nimble;
     };
   }
 }

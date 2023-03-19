@@ -16,7 +16,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 #include "components/ble/HomeService.h"
-#include "systemtask/SystemTask.h"
+#include "components/ble/NimbleController.h"
 #include <cstring>
 
 namespace {
@@ -41,7 +41,7 @@ namespace {
   }
 }
 
-Pinetime::Controllers::HomeService::HomeService(Pinetime::System::SystemTask& system) : m_system(system) {
+Pinetime::Controllers::HomeService::HomeService(Pinetime::Controllers::NimbleController& nimble) : nimble(nimble) {
   characteristicDefinition[0] = {.uuid = &homeEventCharUuid.u,
                                  .access_cb = HomeCallback,
                                  .arg = this,
@@ -76,7 +76,7 @@ int Pinetime::Controllers::HomeService::OnCommand(struct ble_gatt_access_ctxt* c
 void Pinetime::Controllers::HomeService::event(char event) {
   auto* om = ble_hs_mbuf_from_flat(&event, 1);
 
-  uint16_t connectionHandle = m_system.nimble().connHandle();
+  uint16_t connectionHandle = nimble.connHandle();
 
   if (connectionHandle == 0 || connectionHandle == BLE_HS_CONN_HANDLE_NONE) {
     return;
