@@ -37,7 +37,7 @@ Home::Home(Pinetime::Controllers::HomeService& home) : homeService(home) {
 
   lv_style_init(&btn_style);
   lv_style_set_radius(&btn_style, LV_STATE_DEFAULT, 20);
-  lv_style_set_bg_color(&btn_style, LV_STATE_DEFAULT, LV_COLOR_AQUA);
+  lv_style_set_bg_color(&btn_style, LV_STATE_DEFAULT, LV_COLOR_BLUE);
   lv_style_set_bg_opa(&btn_style, LV_STATE_DEFAULT, LV_OPA_50);
 
   btn1 = lv_btn_create(lv_scr_act(), nullptr);
@@ -93,6 +93,8 @@ Home::Home(Pinetime::Controllers::HomeService& home) : homeService(home) {
   lv_obj_add_style(btn6, LV_STATE_DEFAULT, &btn_style);
   label = lv_label_create(btn6, nullptr);
   lv_label_set_text_static(label, "-");
+
+  //homeService.event(Controllers::HomeService::EVENT_HOME_OPEN);
 }
 
 Home::~Home() {
@@ -122,16 +124,16 @@ void Home::OnObjectEvent(lv_obj_t* obj, lv_event_t event) {
 bool Home::OnTouchEvent(Pinetime::Applications::TouchEvents event) {
   switch (event) {
     case TouchEvents::SwipeUp: {
-      return true;
+      return false;
     }
     case TouchEvents::SwipeDown: {
-      return true;
+      return false;
     }
     case TouchEvents::SwipeLeft: {
-      return true;
+      return false;
     }
     case TouchEvents::SwipeRight: {
-      return true;
+      return false;
     }
     default: {
       return false;
