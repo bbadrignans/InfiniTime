@@ -34,7 +34,9 @@ namespace {
   constexpr ble_uuid128_t homeUuid {BaseUuid()};
 
   constexpr ble_uuid128_t homeEventCharUuid {CharUuid(0x01, 0x00)};
-  constexpr ble_uuid128_t homeStatusCharUuid {CharUuid(0x02, 0x00)};
+  constexpr ble_uuid128_t homeAckCharUuid   {CharUuid(0x02, 0x00)};
+
+  constexpr uint8_t MaxStringSize {40};
 
   int HomeCallback(uint16_t /*conn_handle*/, uint16_t /*attr_handle*/, struct ble_gatt_access_ctxt* ctxt, void* arg) {
     return static_cast<Pinetime::Controllers::HomeService*>(arg)->OnCommand(ctxt);
@@ -47,7 +49,7 @@ Pinetime::Controllers::HomeService::HomeService(Pinetime::Controllers::NimbleCon
                                  .arg = this,
                                  .flags = BLE_GATT_CHR_F_NOTIFY,
                                  .val_handle = &eventHandle};
-  characteristicDefinition[1] = {.uuid = &homeStatusCharUuid.u,
+  characteristicDefinition[1] = {.uuid = &homeAckCharUuid.u,
                                  .access_cb = HomeCallback,
                                  .arg = this,
                                  .flags = BLE_GATT_CHR_F_WRITE | BLE_GATT_CHR_F_READ};
@@ -66,8 +68,36 @@ void Pinetime::Controllers::HomeService::Init() {
   ASSERT(res == 0);
 }
 
+char Pinetime::Controllers::HomeService::getAck() const {
+  return ack;
+}
+
+void Pinetime::Controllers::HomeService::resetAck() {
+  ack = 0;
+}
+
 int Pinetime::Controllers::HomeService::OnCommand(struct ble_gatt_access_ctxt* ctxt) {
   if (ctxt->op == BLE_GATT_ACCESS_OP_WRITE_CHR) {
+    /*size_t notifSize = OS_MBUF_PKTLEN(ctxt->om);
+    size_t bufferSize = notifSize;
+    if (notifSize > MaxStringSize) {
+      bufferSize = MaxStringSize;
+    }
+
+    char data[bufferSize + 1];
+    os_mbuf_copydata(ctxt->om, 0, bufferSize, data);
+
+    if (notifSize > bufferSize) {
+      data[bufferSize - 1] = '.';
+      data[bufferSize - 2] = '.';
+      data[bufferSize - 3] = '.';
+    }
+    data[bufferSize] = '\0';
+
+    char* s = &data[0];*/
+    if (ble_uuid_cmp(ctxt->chr->uuid, &homeAckCharUuid.u) == 0) {
+      ack = 1;
+    }
   }
   return 0;
 }

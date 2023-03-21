@@ -47,11 +47,16 @@ namespace Pinetime {
       static const char EVENT_BUTTON_5 = 0x05;
       static const char EVENT_BUTTON_6 = 0x06;
 
+      char getAck() const;
+      void resetAck();
+
     private:
       struct ble_gatt_chr_def characteristicDefinition[3];
       struct ble_gatt_svc_def serviceDefinition[2];
 
       uint16_t eventHandle {};
+
+      char ack = 0;
 
       NimbleController& nimble;
     };

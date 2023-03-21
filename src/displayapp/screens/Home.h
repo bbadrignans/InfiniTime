@@ -20,6 +20,7 @@
 
 #include <FreeRTOS.h>
 #include "displayapp/screens/Screen.h"
+#include "components/motor/MotorController.h"
 #include <lvgl/lvgl.h>
 
 namespace Pinetime {
@@ -30,12 +31,21 @@ namespace Pinetime {
     namespace Screens {
       class Home : public Screen {
       public:
-        Home(Pinetime::Controllers::HomeService& home);
+        Home(Pinetime::Controllers::HomeService& home, Controllers::MotorController& motor);
+
         ~Home() override;
+
+        void Refresh() override;
+
         void OnObjectEvent(lv_obj_t* obj, lv_event_t event);
       private:
         bool OnTouchEvent(TouchEvents event) override;
+
         Pinetime::Controllers::HomeService& homeService;
+
+        Controllers::MotorController& motor;
+
+        char waitAck = 0;
 
         lv_style_t btn_style;
         lv_obj_t* btn1;
@@ -47,6 +57,8 @@ namespace Pinetime {
         lv_obj_t* btn7;
         lv_obj_t* btn8;
         lv_obj_t* btn9;
+
+        lv_task_t* taskRefresh;
       };
     }
   }

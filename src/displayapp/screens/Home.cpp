@@ -21,9 +21,6 @@
 #include "displayapp/DisplayApp.h"
 #include "components/ble/HomeService.h"
 
-
-
-
 using namespace Pinetime::Applications::Screens;
 
 static void event_handler(lv_obj_t* obj, lv_event_t event) {
@@ -31,7 +28,7 @@ static void event_handler(lv_obj_t* obj, lv_event_t event) {
   screen->OnObjectEvent(obj, event);
 }
 
-Home::Home(Pinetime::Controllers::HomeService& home) : homeService(home) {
+Home::Home(Pinetime::Controllers::HomeService& home, Pinetime::Controllers::MotorController& motor) : homeService(home), motor {motor} {
 
   lv_obj_t* label;
 
@@ -95,16 +92,27 @@ Home::Home(Pinetime::Controllers::HomeService& home) : homeService(home) {
   lv_label_set_text_static(label, "-");
 
   //homeService.event(Controllers::HomeService::EVENT_HOME_OPEN);
+  taskRefresh = lv_task_create(RefreshTaskCallback, LV_DISP_DEF_REFR_PERIOD, LV_TASK_PRIO_MID, this);
 }
 
 Home::~Home() {
+  lv_task_del(taskRefresh);
   lv_style_reset(&btn_style);
   lv_obj_clean(lv_scr_act());
 }
 
+void Home::Refresh() {
+    //TODO : Add a timeout for ACK
+    if (waitAck && homeService.getAck()) {
+        waitAck = 0;
+        homeService.resetAck();
+        motor.RunForDuration(35);
+    }
+}
 
 void Home::OnObjectEvent(lv_obj_t* obj, lv_event_t event) {
   if (event == LV_EVENT_CLICKED) {
+    waitAck = 1;
     if (obj == btn1) {
       homeService.event(Controllers::HomeService::EVENT_BUTTON_1);
     } else if (obj == btn2) {
@@ -140,4 +148,3 @@ bool Home::OnTouchEvent(Pinetime::Applications::TouchEvents event) {
     }
   }
 }
-
