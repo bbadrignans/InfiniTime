@@ -319,6 +319,9 @@ void DisplayApp::Refresh() {
               case TouchEvents::SwipeRight:
                 LoadNewScreen(Apps::QuickSettings, DisplayApp::FullRefreshDirections::RightAnim);
                 break;
+              case TouchEvents::SwipeLeft:
+                LoadNewScreen(Apps::Home, DisplayApp::FullRefreshDirections::LeftAnim);
+                break;
               case TouchEvents::DoubleTap:
                 PushMessageToSystemTask(System::Messages::GoToSleep);
                 break;
