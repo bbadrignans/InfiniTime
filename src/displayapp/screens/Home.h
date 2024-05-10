@@ -20,7 +20,6 @@
 
 #include <FreeRTOS.h>
 #include "displayapp/screens/Screen.h"
-#include "components/motor/MotorController.h"
 #include <lvgl/lvgl.h>
 #include "displayapp/screens/Screen.h"
 #include "displayapp/apps/Apps.h"
