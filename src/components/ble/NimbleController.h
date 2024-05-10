@@ -104,8 +104,8 @@ namespace Pinetime {
       AlertNotificationClient alertNotificationClient;
       CurrentTimeService currentTimeService;
       MusicService musicService;
-      SimpleWeatherService weatherService;
       HomeService homeService;
+      SimpleWeatherService weatherService;
       NavigationService navService;
       BatteryInformationService batteryInformationService;
       ImmediateAlertService immediateAlertService;
