@@ -22,6 +22,10 @@
 #include "displayapp/screens/Screen.h"
 #include "components/motor/MotorController.h"
 #include <lvgl/lvgl.h>
+#include "displayapp/screens/Screen.h"
+#include "displayapp/apps/Apps.h"
+#include "displayapp/Controllers.h"
+#include "Symbols.h"
 
 namespace Pinetime {
   namespace Controllers {
@@ -61,6 +65,18 @@ namespace Pinetime {
         lv_task_t* taskRefresh;
       };
     }
+
+    template <>
+    struct AppTraits<Apps::Home> {
+      static constexpr Apps app = Apps::Home;
+      static constexpr const char* icon = Screens::Symbols::home;
+
+      static Screens::Screen* Create(AppControllers& controllers) {
+        return new Screens::Home(*controllers.homeService,
+                                  controllers.motorController);
+      };
+    };
+
   }
 }
 

@@ -24,6 +24,7 @@ namespace Pinetime {
     class FS;
     class Timer;
     class MusicService;
+    class HomeService;
     class NavigationService;
   }
 
@@ -50,6 +51,7 @@ namespace Pinetime {
       Pinetime::Applications::DisplayApp* displayApp;
       Pinetime::Components::LittleVgl& lvgl;
       Pinetime::Controllers::MusicService* musicService;
+      Pinetime::Controllers::HomeService* homeService;
       Pinetime::Controllers::NavigationService* navigationService;
     };
   }
