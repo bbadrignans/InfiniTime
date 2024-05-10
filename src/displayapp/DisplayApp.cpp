@@ -553,36 +553,6 @@ void DisplayApp::LoadScreen(Apps app, DisplayApp::FullRefreshDirections directio
       } else {
         currentScreen.reset(userWatchFaces[0].create(controllers));
       }
-    case Apps::StopWatch:
-      currentScreen = std::make_unique<Screens::StopWatch>(*systemTask);
-      break;
-    case Apps::Twos:
-      currentScreen = std::make_unique<Screens::Twos>();
-      break;
-    case Apps::Paint:
-      currentScreen = std::make_unique<Screens::InfiniPaint>(lvgl, motorController);
-      break;
-    case Apps::Paddle:
-      currentScreen = std::make_unique<Screens::Paddle>(lvgl);
-      break;
-    case Apps::Music:
-      currentScreen = std::make_unique<Screens::Music>(systemTask->nimble().music());
-      break;
-    case Apps::Home:
-      currentScreen = std::make_unique<Screens::Home>(systemTask->nimble().home(), motorController);
-      break;
-    case Apps::Navigation:
-      currentScreen = std::make_unique<Screens::Navigation>(systemTask->nimble().navigation());
-      break;
-    case Apps::HeartRate:
-      currentScreen = std::make_unique<Screens::HeartRate>(heartRateController, *systemTask);
-      break;
-    case Apps::Metronome:
-      currentScreen = std::make_unique<Screens::Metronome>(motorController, *systemTask);
-      break;
-    case Apps::Steps:
-      currentScreen = std::make_unique<Screens::Steps>(motionController, settingsController);
->>>>>>> b83f8579 (HomeService : Remove SystemTask dependency)
       break;
     }
   }
