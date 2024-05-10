@@ -18,6 +18,7 @@
 #include "displayapp/screens/StopWatch.h"
 #include "displayapp/screens/Metronome.h"
 #include "displayapp/screens/Music.h"
+#include "displayapp/screens/Home.h"
 #include "displayapp/screens/Navigation.h"
 #include "displayapp/screens/Notifications.h"
 #include "displayapp/screens/SystemInfo.h"
@@ -270,7 +271,7 @@ void DisplayApp::Refresh() {
         } else {
           LoadNewScreen(Apps::Timer, DisplayApp::FullRefreshDirections::Up);
         }
-        motorController.RunForDuration(35);
+        motorController.RunForDuration(90);
         break;
       case Messages::AlarmTriggered:
         if (currentApp == Apps::Alarm) {
@@ -317,6 +318,9 @@ void DisplayApp::Refresh() {
                 break;
               case TouchEvents::SwipeRight:
                 LoadNewScreen(Apps::QuickSettings, DisplayApp::FullRefreshDirections::RightAnim);
+                break;
+              case TouchEvents::SwipeLeft:
+                LoadNewScreen(Apps::Home, DisplayApp::FullRefreshDirections::LeftAnim);
                 break;
               case TouchEvents::DoubleTap:
                 PushMessageToSystemTask(System::Messages::GoToSleep);
