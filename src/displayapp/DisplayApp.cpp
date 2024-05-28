@@ -621,6 +621,10 @@ void DisplayApp::Register(Pinetime::Controllers::MusicService* musicService) {
   this->controllers.musicService = musicService;
 }
 
+void DisplayApp::Register(Pinetime::Controllers::HomeService* homeService) {
+  this->controllers.homeService = homeService;
+}
+
 void DisplayApp::Register(Pinetime::Controllers::NavigationService* NavigationService) {
   this->controllers.navigationService = NavigationService;
 }

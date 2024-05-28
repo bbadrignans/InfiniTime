@@ -40,6 +40,7 @@ namespace Pinetime {
 
       void event(char event);
 
+      static const char EVENT_HOME_OPEN = 0xFF;
       static const char EVENT_BUTTON_1 = 0x01;
       static const char EVENT_BUTTON_2 = 0x02;
       static const char EVENT_BUTTON_3 = 0x03;

@@ -17,10 +17,9 @@
 */
 #pragma once
 
-
 #include <FreeRTOS.h>
-#include "displayapp/screens/Screen.h"
-#include <lvgl/lvgl.h>
+#include <lvgl/src/lv_core/lv_obj.h>
+#include <string>
 #include "displayapp/screens/Screen.h"
 #include "displayapp/apps/Apps.h"
 #include "displayapp/Controllers.h"

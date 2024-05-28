@@ -91,7 +91,7 @@ Home::Home(Pinetime::Controllers::HomeService& home, Pinetime::Controllers::Moto
   label = lv_label_create(btn6, nullptr);
   lv_label_set_text_static(label, "-");
 
-  //homeService.event(Controllers::HomeService::EVENT_HOME_OPEN);
+  homeService.event(Controllers::HomeService::EVENT_HOME_OPEN);
   taskRefresh = lv_task_create(RefreshTaskCallback, LV_DISP_DEF_REFR_PERIOD, LV_TASK_PRIO_MID, this);
 }
 
@@ -123,7 +123,9 @@ void Home::OnObjectEvent(lv_obj_t* obj, lv_event_t event) {
       homeService.event(Controllers::HomeService::EVENT_BUTTON_4);
     } else if (obj == btn5) {
       homeService.event(Controllers::HomeService::EVENT_BUTTON_5);
+      lv_obj_set_hidden(btn1, false);
     } else if (obj == btn6) {
+      lv_obj_set_hidden(btn1, true);
       homeService.event(Controllers::HomeService::EVENT_BUTTON_6);
     }
   }
